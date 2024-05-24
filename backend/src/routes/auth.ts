@@ -53,7 +53,7 @@ authRouter.post("/signup", async (c) => {
   }
 });
 
-authRouter.post("/api/v1/user/signin", async (c) => {
+authRouter.post("/signin", async (c) => {
   try {
     const prisma = new PrismaClient({
       datasourceUrl: c.env.DATABASE_URL,
