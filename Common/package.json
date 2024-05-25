@@ -1,6 +1,6 @@
 {
   "name": "@akshatgirdhar/blogmodules",
-  "version": "1.0.0",
+  "version": "1.0.2",
   "main": "dist/index.js",
   "scripts": {
     "test": "echo \"Error: no test specified\" && exit 1"
@@ -11,5 +11,9 @@
   "description": "",
   "dependencies": {
     "zod": "^3.23.8"
+  },
+  "repository":"https://github.com/akshatg5/blog-app",
+  "publishConfig": {
+    "registry": "https://npm.pkg.github.com"
   }
 }
