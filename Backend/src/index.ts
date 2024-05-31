@@ -3,6 +3,7 @@ import { sign, verify } from "hono/jwt";
 import { authRouter } from "./routes/auth";
 import { blogRouter } from "./routes/blogs";
 import { statusRouter } from "./routes/checkStatus";
+import { cors } from "hono/cors"
 
 const app = new Hono<{
   Bindings: {
@@ -10,6 +11,14 @@ const app = new Hono<{
     JWT_SECRET: string;
   };
 }>();
+
+app.use(
+  cors({
+    origin: "http://localhost:5173", // Specify the allowed origin(s)
+    allowMethods: ["GET", "POST", "PUT", "DELETE","PATCH"], // Specify the allowed HTTP methods
+    allowHeaders: ["Content-Type", "Authorization"], // Specify the allowed headers
+  })
+);
 
 //middleware for all the blog endpoints
 
