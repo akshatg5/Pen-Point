@@ -1,17 +1,26 @@
 import { Button } from "@/components/ui/button";
+import { Link } from "react-router-dom";
 
+interface BlogCardProps {
+  title : string
+  description : string
+  toLink : string
+}
 
-export function BlogCard() {
+export const BlogCard : React.FC<BlogCardProps> = ({title,description,toLink}) => {
+
     return (
-      <div className="max-w-sm">
-        <h5 className="text-2xl font-bold tracking-tight text-gray-900 dark:text-white">
-          Noteworthy technology acquisitions 2021
+      <div className="w-1/2 border border-slate-400 rounded-2xl hover:shadow-xl p-5 my-4">
+        <h5 className="text-2xl font-bold tracking-tight text-gray-900 dark:text-white mb-2">
+          {title}
         </h5>
         <p className="font-normal text-gray-700 dark:text-gray-400">
-          Here are the biggest enterprise technology acquisitions of 2021 so far, in reverse chronological order.
+          {description.slice(0,50)}...
         </p>
-        <Button>
+        <Button className="my-4">
+          <Link to={toLink}>
           Read more
+          </Link>
           <svg className="-mr-1 ml-2 h-4 w-4" fill="currentColor" viewBox="0 0 20 20" xmlns="http://www.w3.org/2000/svg">
             <path
               fillRule="evenodd"

@@ -126,7 +126,7 @@ blogRouter.get("/bulk", async (c) => {
       const allBlogs = await prisma.post.findMany({
         skip: skip,
         take: pageSize,
-        select: { title: true },
+        select: { id : true,title: true,content:true }
       });
   
       const totalBlogs = await prisma.post.count();

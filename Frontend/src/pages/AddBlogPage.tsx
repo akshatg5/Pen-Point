@@ -3,6 +3,7 @@ import axios from "axios";
 import { Input } from "@/components/ui/input";
 import { Button } from "@/components/ui/button";
 import { Textarea } from "@/components/ui/textarea";
+import { Navbar } from "@/components/navbar";
 
 const CreateBlogPost: React.FC = () => {
   const [title, setTitle] = useState("");
@@ -23,7 +24,7 @@ const CreateBlogPost: React.FC = () => {
         },
         {
           headers: {
-            Authorization: `Bearer ${token}`,
+            Authorization: `${token}`,
           },
         }
       );
@@ -39,6 +40,7 @@ const CreateBlogPost: React.FC = () => {
 
   return (
     <div className="flex flex-col items-center justify-center min-h-screen bg-gray-100">
+      <Navbar />
       <div className="bg-white p-8 rounded-lg shadow-md w-full max-w-2xl">
         <div className="mb-8 text-center">
           <h1 className="text-3xl font-bold mb-2">Create a New Blog Post</h1>
