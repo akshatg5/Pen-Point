@@ -2,8 +2,9 @@ import React, { useState } from "react";
 import axios from "axios";
 import { Input } from "@/components/ui/input";
 import { Button } from "@/components/ui/button";
-import { Textarea } from "@/components/ui/textarea";
+// import { Textarea } from "@/components/ui/textarea";
 import { Navbar } from "@/components/navbar";
+import { Textarea } from "@/components/ui/textarea";
 
 const CreateBlogPost: React.FC = () => {
   const [title, setTitle] = useState("");

@@ -57,9 +57,9 @@ const AllBlogs: React.FC = () => {
           blogs.map((blog) => (
             <BlogCard
               title={blog.title}
-              description={blog.content}
+              content={blog.content}
               key={blog.id}
-              toLink={blog.id}
+              toLink={'/blog'}
             />
           ))
         )}
