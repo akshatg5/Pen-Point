@@ -5,6 +5,8 @@ import { Button } from "@/components/ui/button";
 import { Link } from "react-router-dom";
 import { QuotesCard } from "@/components/quotesHalf";
 
+const BACKEND_URL = import.meta.env.BASE_URL;
+
 const SignUp: React.FC = () => {
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
@@ -16,7 +18,7 @@ const SignUp: React.FC = () => {
 
     try {
       const response = await axios.post(
-        "https://backend.akshatgirdhar05.workers.dev/api/v1/auth/signup",
+        `${BACKEND_URL}/api/v1/auth/signup`,
         {
           email,
           password,

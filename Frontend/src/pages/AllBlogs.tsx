@@ -5,6 +5,8 @@ import { Skeleton } from "@/components/ui/skeleton";
 import axios from "axios";
 import React, { useEffect, useState } from "react";
 
+const BACKEND_URL = import.meta.env.BASE_URL;
+
 interface Blog {
   id: string;
   title: string;
@@ -20,7 +22,7 @@ const AllBlogs: React.FC = () => {
     try {
       setLoading(true);
       const allBlogs = await axios.get(
-        "https://backend.akshatgirdhar05.workers.dev/api/v1/blog/bulk",
+        `${BACKEND_URL}/api/v1/blog/bulk`,
         {
           headers: {
             Authorization: `${token}`,

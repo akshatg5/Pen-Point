@@ -6,6 +6,9 @@ import { Button } from "@/components/ui/button";
 import { Navbar } from "@/components/navbar";
 import { Textarea } from "@/components/ui/textarea";
 
+const BACKEND_URL = import.meta.env.BASE_URL;
+
+
 const CreateBlogPost: React.FC = () => {
   const [title, setTitle] = useState("");
   const [content, setContent] = useState("");
@@ -18,7 +21,7 @@ const CreateBlogPost: React.FC = () => {
     try {
       const token = localStorage.getItem("token");
       const response = await axios.post(
-        "https://backend.akshatgirdhar05.workers.dev/api/v1/blog",
+        `${BACKEND_URL}/api/v1/blog`,
         {
           title,
           content,
