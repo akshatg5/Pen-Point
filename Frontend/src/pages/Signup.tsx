@@ -5,12 +5,14 @@ import { Button } from "@/components/ui/button";
 import { Link } from "react-router-dom";
 import { QuotesCard } from "@/components/quotesHalf";
 
-const BACKEND_URL = import.meta.env.BASE_URL;
+const BACKEND_URL = import.meta.env.VITE_BASE_URL;
 
 const SignUp: React.FC = () => {
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
-  const [name, setName] = useState("");
+  const [firstName, setFirstName] = useState("");
+  const [lastName, setLastName] = useState("");
+  const [username, setUsername] = useState("");
   const [error, setError] = useState("");
 
   const handleSubmit = async (e: React.FormEvent) => {
@@ -22,7 +24,9 @@ const SignUp: React.FC = () => {
         {
           email,
           password,
-          name,
+          firstName,
+          lastName,
+          username
         }
       );
 
@@ -31,7 +35,9 @@ const SignUp: React.FC = () => {
       alert("Signup Successful!");
       setEmail("");
       setPassword("");
-      setName("");
+      setFirstName("");
+      setLastName("");
+      setUsername("");
     } catch (err) {
       console.error(err);
       setError("An error occurred during sign-up");
@@ -84,8 +90,32 @@ const SignUp: React.FC = () => {
             <Input
               type="text"
               placeholder="Enter your username"
-              value={name}
-              onChange={(e) => setName(e.target.value)}
+              value={username}
+              onChange={(e) => setUsername(e.target.value)}
+              className="w-full"
+            />
+          </div>
+          <div className="mb-6">
+            <label htmlFor="name" className="block font-bold mb-2">
+              First Name
+            </label>
+            <Input
+              type="text"
+              placeholder="Enter your first name"
+              value={firstName}
+              onChange={(e) => setFirstName(e.target.value)}
+              className="w-full"
+            />
+          </div>
+          <div className="mb-6">
+            <label htmlFor="name" className="block font-bold mb-2">
+              Last Name
+            </label>
+            <Input
+              type="text"
+              placeholder="Enter your last name"
+              value={lastName}
+              onChange={(e) => setLastName(e.target.value)}
               className="w-full"
             />
           </div>

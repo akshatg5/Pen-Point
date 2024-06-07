@@ -4,6 +4,7 @@ import { authRouter } from "./routes/auth";
 import { blogRouter } from "./routes/blogs";
 import { statusRouter } from "./routes/checkStatus";
 import { cors } from "hono/cors"
+import { userRouter } from "./routes/user";
 
 const app = new Hono<{
   Bindings: {
@@ -20,10 +21,9 @@ app.use(
   })
 );
 
-//middleware for all the blog endpoints
-
 app.route('/',statusRouter)
 app.route('/api/v1/auth',authRouter)
 app.route('/api/v1/blog',blogRouter)
+app.route('/api/v1/user',userRouter)
 
 export default app;

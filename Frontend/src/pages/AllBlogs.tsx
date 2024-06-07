@@ -4,13 +4,19 @@ import { Progress } from "@/components/ui/progress";
 import { Skeleton } from "@/components/ui/skeleton";
 import axios from "axios";
 import React, { useEffect, useState } from "react";
+import { Link } from "react-router-dom";
 
-const BACKEND_URL = import.meta.env.BASE_URL;
+const BACKEND_URL = import.meta.env.VITE_BASE_URL;
 
 interface Blog {
+  publishedBy: any;
   id: string;
   title: string;
   content: string;
+  authorId: string;
+  publishedAt: string;
+  firstName: string;
+  lastName: string;
 }
 
 const AllBlogs: React.FC = () => {
@@ -21,14 +27,11 @@ const AllBlogs: React.FC = () => {
   const getAllBlogs = async () => {
     try {
       setLoading(true);
-      const allBlogs = await axios.get(
-        `${BACKEND_URL}/api/v1/blog/bulk`,
-        {
-          headers: {
-            Authorization: `${token}`,
-          },
-        }
-      );
+      const allBlogs = await axios.get(`${BACKEND_URL}/api/v1/blog/bulk`, {
+        headers: {
+          Authorization: `${token}`,
+        },
+      });
       setAllBlogs(allBlogs.data.allBlogs);
       setLoading(false);
     } catch (error) {
@@ -43,25 +46,36 @@ const AllBlogs: React.FC = () => {
   return (
     <div className="flex flex-col bg-gray-100 h-screen">
       <Navbar />
-      <div className="p-2 mt-20">
-        <h1 className="text-4xl font-bold">All Blogs</h1>
-      </div>
       {error && <p className="text-red-500">{error}</p>}
       {loading && <Skeleton />}
-      <div className="flex flex-col items-center justify-center">
+      <div className="mt-24 flex flex-col items-center justify-center">
         {loading ? (
           <>
             <Skeleton className="w-1/2 h-24 mb-4" />
             <Skeleton className="w-1/2 h-24 mb-4" />
             <Skeleton className="w-1/2 h-24 mb-4" />
+            <Skeleton className="w-1/2 h-24 mb-4" />
           </>
+        ) : blogs.length === 0 ? (
+          <Link to={"/addblog"}>
+            <h1 className="mt-10 text-center text-2xl font-bold underline">
+              No blogs on your feed!
+            </h1>
+            <p className="text-center text-md font-semibold">
+              Write some yourself,come on!
+            </p>
+          </Link>
         ) : (
           blogs.map((blog) => (
             <BlogCard
               title={blog.title}
               content={blog.content}
               key={blog.id}
-              toLink={'/blog'}
+              authorId={blog.authorId}
+              publishedAt={new Date(blog.publishedAt)}
+              firstName={blog.publishedBy.firstName}
+              lastName={blog.publishedBy.lastName}
+              toLink={`/blog/${blog.id}`}
             />
           ))
         )}

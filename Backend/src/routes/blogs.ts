@@ -2,7 +2,7 @@ import { PrismaClient } from "@prisma/client/edge";
 import { withAccelerate } from "@prisma/extension-accelerate";
 import { Hono } from "hono";
 import { verify } from "hono/jwt";
-import { addBlogInput,updateBlogInput } from '@akshatgirdhar/blogmodules'
+import { addBlogInput, updateBlogInput } from "@akshatgirdhar/blogmodules";
 
 export const blogRouter = new Hono<{
   Bindings: {
@@ -34,9 +34,9 @@ blogRouter.use("/*", async (c, next) => {
 
 blogRouter.post("/", async (c) => {
   const body = await c.req.json();
-  const {success} = addBlogInput.safeParse(body)
+  const { success } = addBlogInput.safeParse(body);
   if (!success) {
-    return c.json({message : 'invalid inputs'})
+    return c.json({ message: "invalid inputs" });
   }
   const authorId = c.get("userId");
   const prisma = new PrismaClient({
@@ -57,9 +57,9 @@ blogRouter.post("/", async (c) => {
 blogRouter.put("/:id", async (c) => {
   const blogId = c.req.param("id");
   const body = await c.req.json();
-  const {success} = updateBlogInput.safeParse(body)
+  const { success } = updateBlogInput.safeParse(body);
   if (!success) {
-    return c.json({message : "Invalid inputs"})
+    return c.json({ message: "Invalid inputs" });
   }
   const prisma = new PrismaClient({
     datasourceUrl: c.env.DATABASE_URL,
@@ -108,42 +108,51 @@ blogRouter.get("/page/:id", async (c) => {
 });
 
 blogRouter.get("/bulk", async (c) => {
-    const prisma = new PrismaClient({
-      datasourceUrl: c.env.DATABASE_URL,
-    }).$extends(withAccelerate());
-  
-    try {
-      const page = parseInt(c.req.query("page") || "1");
-      const pageSize = parseInt(c.req.query("pageSize") || "10");
-  
-      if (isNaN(page) || isNaN(pageSize) || page <= 0 || pageSize <= 0) {
-        c.status(400);
-        return c.json({ message: "Invalid page number or page Size." });
-      }
-  
-      const skip = (page - 1) * pageSize;
-  
-      const allBlogs = await prisma.post.findMany({
-        skip: skip,
-        take: pageSize,
-        select: { id : true,title: true,content:true }
-      });
-  
-      const totalBlogs = await prisma.post.count();
-      const totalPages = Math.ceil(totalBlogs / pageSize);
-  
-      return c.json({
-        page,
-        pageSize,
-        totalPages,
-        totalBlogs,
-        allBlogs,
-      });
-    } catch (error: any) {
-      c.status(error.status || 500);
-      console.log(error);
-      return c.json({ message: error.message });
-    } finally {
-      await prisma.$disconnect();
+  const prisma = new PrismaClient({
+    datasourceUrl: c.env.DATABASE_URL,
+  }).$extends(withAccelerate());
+
+  try {
+    const page = parseInt(c.req.query("page") || "1");
+    const pageSize = parseInt(c.req.query("pageSize") || "10");
+
+    if (isNaN(page) || isNaN(pageSize) || page <= 0 || pageSize <= 0) {
+      c.status(400);
+      return c.json({ message: "Invalid page number or page Size." });
     }
-  });
+
+    const skip = (page - 1) * pageSize;
+
+    const allBlogs = await prisma.post.findMany({
+      skip: skip,
+      take: pageSize,
+      select: {
+        id: true,
+        title: true,
+        content: true,
+        authorId: true,
+        publishedAt: true,
+        publishedBy: {
+          select: { firstName: true, lastName: true, username: true },
+        },
+      },
+    });
+
+    const totalBlogs = await prisma.post.count();
+    const totalPages = Math.ceil(totalBlogs / pageSize);
+
+    return c.json({
+      page,
+      pageSize,
+      totalPages,
+      totalBlogs,
+      allBlogs,
+    });
+  } catch (error: any) {
+    c.status(error.status || 500);
+    console.log(error);
+    return c.json({ message: error.message });
+  } finally {
+    await prisma.$disconnect();
+  }
+});

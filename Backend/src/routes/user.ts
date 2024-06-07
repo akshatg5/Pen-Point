@@ -1,39 +1,52 @@
-import { Hono } from "hono";
-import { PrismaClient } from "@prisma/client/extension";
+import { PrismaClient } from "@prisma/client/edge";
 import { withAccelerate } from "@prisma/extension-accelerate";
+import { Hono } from "hono";
 import { verify } from "hono/jwt";
+import { addBlogInput,updateBlogInput } from '@akshatgirdhar/blogmodules'
 
 export const userRouter = new Hono<{
   Bindings: {
     DATABASE_URL: string;
     JWT_SECRET: string;
   };
+  Variables: {
+    userId: string;
+  };
 }>();
 
-// user Routes
-userRouter.get("/whoami",async (c) => {
-    const header = c.req.header("authorization") || "";
-    try {
-        const user = await verify(header,c.env.JWT_SECRET)
-        if (typeof user.id != "string") {
-            return c.json({error : "Cannot get the userID!"})
-        }
-        const userId = user.id;
-        const prisma = new PrismaClient({
-            datasourceUrl: c.env.DATABASE_URL,
-          }).$extends(withAccelerate());
+userRouter.use("/*", async (c, next) => {
+  const header = c.req.header("authorization") || "";
 
-          const whoami = await prisma.user.findUnique({
-            where : { id : userId},
-            select : {name : true}
-          })
-
-          if (!whoami) {
-            return c.json({error : "User not found"},404)
-          }
-
-          return c.json(whoami)
-    } catch (error) {
-        return c.json({error : 'Cannot get the user!'})
+  try {
+    const user = await verify(header, c.env.JWT_SECRET);
+    if (typeof user.id == "string") {
+      c.set("userId", user.id);
+      await next();
+    } else {
+      c.status(401);
+      return c.json({ error: "Unauthorized" });
     }
+  } catch (error) {
+    c.status(401);
+    return c.json({ error: "Unauthorized" });
+  }
+});
+
+userRouter.get('/whoami',async (c) => {
+  const prisma = new PrismaClient({
+    datasourceUrl: c.env.DATABASE_URL,
+  }).$extends(withAccelerate());
+
+  try {
+    const userId = c.get("userId")
+    const userDetails = await prisma.user.findFirst({
+      where : {id : userId},
+      select : {id:true,firstName:true,lastName:true,username:true}
+    })
+
+    return c.json(userDetails);
+  } catch (error) {
+    return c.json({error})
+  }
+
 })

@@ -14,11 +14,13 @@ datasource db {
 }
 
 model User {
-  id            String  @id @default(uuid())
-  email         String  @unique
-  name          String?
-  password      String
-  posts         Post[]
+  id        String  @id @default(uuid())
+  email     String  @unique
+  username  String  @default("default")
+  firstName String  @default("default")
+  lastName  String?
+  password  String
+  posts     Post[]
 }
 
 model Post {
@@ -27,5 +29,6 @@ model Post {
   content     String
   published   Boolean @default(false)
   publishedBy User    @relation(fields: [authorId], references: [id])
+  publishedAt DateTime  @default(now())
   authorId    String
 }

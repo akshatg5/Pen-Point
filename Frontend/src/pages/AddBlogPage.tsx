@@ -6,7 +6,7 @@ import { Button } from "@/components/ui/button";
 import { Navbar } from "@/components/navbar";
 import { Textarea } from "@/components/ui/textarea";
 
-const BACKEND_URL = import.meta.env.BASE_URL;
+const BACKEND_URL = import.meta.env.VITE_BASE_URL;
 
 
 const CreateBlogPost: React.FC = () => {

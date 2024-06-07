@@ -40,12 +40,23 @@ authRouter.post("/signup", async (c) => {
       });
       throw new Error("This user already exists!");
     }
+    const encoder = new TextEncoder();
+    const hashedPassword = await crypto.subtle.digest(
+      {
+        name : 'SHA-256'
+      },
+      encoder.encode(body.password)
+    )
+
+    const hashedPasswordString = Array.from(new Uint8Array(hashedPassword)).map(b => b.toString(16).padStart(2,'0')).join('')
 
     const user = await prisma.user.create({
       data: {
         email: body.email,
-        password: body.password,
-        name: body.name,
+        username: body.username,
+        password: hashedPasswordString,
+        firstName: body.firstName,
+        lastName: body.lastName,
       },
     });
     const jwtToken = await sign({ id: user.id }, secret);
@@ -75,13 +86,24 @@ authRouter.post("/signin", async (c) => {
     const user = await prisma.user.findUnique({
       where: {
         email: body.email,
-        password: body.password,
       },
     });
 
     if (!user) {
       c.status(401);
       return c.json({ error: "Unauthorized. Invalid credentials" });
+    }
+
+    const encoder = new TextEncoder();
+    const hashedPassword = await crypto.subtle.digest('SHA-256',encoder.encode(body.password))
+
+    const hashedPasswordString = Array.from(new Uint8Array(hashedPassword)).map(b => b.toString(16).padStart(2,'0')).join('');
+
+    if (hashedPasswordString !== user.password) {
+      c.status(401)
+      return c.json({
+        error : "Invalid email or password.Try again!"
+      })
     }
 
     const jwtToken = await sign({ id: user.id }, secret);

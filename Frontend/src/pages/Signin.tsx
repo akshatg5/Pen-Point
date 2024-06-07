@@ -5,7 +5,7 @@ import { Button } from "@/components/ui/button";
 import { Link, useNavigate } from "react-router-dom";
 import { QuotesCard } from "@/components/quotesHalf";
 
-const BACKEND_URL = import.meta.env.BASE_URL;
+const BACKEND_URL = import.meta.env.VITE_BASE_URL;
 
 const SignIn: React.FC = () => {
   const [email, setEmail] = useState("");
