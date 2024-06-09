@@ -48,5 +48,4 @@ userRouter.get('/whoami',async (c) => {
   } catch (error) {
     return c.json({error})
   }
-
 })

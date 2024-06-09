@@ -1,6 +1,5 @@
 import { BlogCard } from "@/components/blogCard";
 import { Navbar } from "@/components/navbar";
-import { Progress } from "@/components/ui/progress";
 import { Skeleton } from "@/components/ui/skeleton";
 import axios from "axios";
 import React, { useEffect, useState } from "react";

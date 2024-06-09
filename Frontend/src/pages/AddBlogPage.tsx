@@ -2,29 +2,27 @@ import React, { useState } from "react";
 import axios from "axios";
 import { Input } from "@/components/ui/input";
 import { Button } from "@/components/ui/button";
-// import { Textarea } from "@/components/ui/textarea";
 import { Navbar } from "@/components/navbar";
-import { Textarea } from "@/components/ui/textarea";
+import MDEditor from "@uiw/react-md-editor";
 
 const BACKEND_URL = import.meta.env.VITE_BASE_URL;
 
-
 const CreateBlogPost: React.FC = () => {
   const [title, setTitle] = useState("");
-  const [content, setContent] = useState("");
   const [error, setError] = useState("");
   const [successMessage, setSuccessMessage] = useState("");
+  const [value, setValue] = useState<string>("**Hello world!!!**");
 
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
 
     try {
       const token = localStorage.getItem("token");
-      const response = await axios.post(
+      await axios.post(
         `${BACKEND_URL}/api/v1/blog`,
         {
           title,
-          content,
+          content: value, // Use the value from MDEditor as the content
         },
         {
           headers: {
@@ -35,7 +33,7 @@ const CreateBlogPost: React.FC = () => {
 
       setSuccessMessage("Blog post created successfully!");
       setTitle("");
-      setContent("");
+      setValue(""); // Clear the MDEditor content
     } catch (err) {
       console.error(err);
       setError("An error occurred while creating the blog post.");
@@ -70,12 +68,10 @@ const CreateBlogPost: React.FC = () => {
             <label htmlFor="content" className="block font-bold mb-2">
               Content
             </label>
-            <Textarea
-              placeholder="Write your blog post content here..."
-              value={content}
-              onChange={(e) => setContent(e.target.value)}
-              className="w-full"
-              rows={8}
+            <MDEditor value={value} onChange={(val) => setValue(val || "")} />
+            <MDEditor.Markdown
+              source={value}
+              style={{ whiteSpace: "pre-wrap" }}
             />
           </div>
           <div className="text-center">
