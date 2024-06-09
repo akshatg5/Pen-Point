@@ -1,5 +1,6 @@
 import { Button } from "@/components/ui/button";
 import { Link } from "react-router-dom";
+import ReactMarkdown from "react-markdown";
 
 interface BlogCardProps {
   title: string;
@@ -15,7 +16,6 @@ export const BlogCard: React.FC<BlogCardProps> = ({
   title,
   content,
   toLink,
-  authorId,
   publishedAt,
   firstName,
   lastName,
@@ -33,10 +33,10 @@ export const BlogCard: React.FC<BlogCardProps> = ({
           <h5 className="text-2xl font-bold tracking-tight text-gray-900 dark:text-white mb-1">
             {title}
           </h5>
-          <p className="font-normal text-gray-700 dark:text-gray-400">
-            {content.slice(0, 100)}...
-          </p>
-          <div className="flex  items-center">
+          <ReactMarkdown className="font-normal text-gray-700 dark:text-gray-400">
+            {content.slice(0, 100) + "..."}
+          </ReactMarkdown>
+          <div className="flex items-center">
             <p className="font-xs text-slate-400">
               {`${Math.ceil(content.length / 1000)}`} minute read
             </p>

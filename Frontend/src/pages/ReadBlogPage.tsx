@@ -2,6 +2,9 @@ import { Navbar } from "@/components/navbar";
 import axios from "axios";
 import { useEffect, useState } from "react";
 import { useParams } from "react-router-dom";
+import ReactMarkdown from "react-markdown";
+import remarkGfm from "remark-gfm";
+
 
 const BACKEND_URL = import.meta.env.VITE_BASE_URL;
 
@@ -59,8 +62,10 @@ export const ReadBlogPage = () => {
             </div>
           </div>
         </div>
-        <div className="flex justify-center items-center w-1/2 p-8 mt-10">
-          <p>{content}</p>
+        <div className="justify-center items-center w-1/2 p-8 mt-10">
+          <ReactMarkdown remarkPlugins={[remarkGfm]}>
+            {content}
+          </ReactMarkdown>
         </div>
       </div>
     </div>
