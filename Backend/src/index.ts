@@ -15,7 +15,7 @@ const app = new Hono<{
 
 app.use(
   cors({
-    origin: "http://localhost:5173", // Specify the allowed origin(s)
+    origin: ["http://localhost:5173","https://penpoint.vercel.app"], // Specify the allowed origin(s)
     allowMethods: ["GET", "POST", "PUT", "DELETE","PATCH"], // Specify the allowed HTTP methods
     allowHeaders: ["Content-Type", "Authorization"], // Specify the allowed headers
   })
