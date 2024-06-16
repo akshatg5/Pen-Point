@@ -3,8 +3,7 @@ import { Navbar } from "@/components/navbar";
 import { Skeleton } from "@/components/ui/skeleton";
 import axios from "axios";
 import React, { useEffect, useState } from "react";
-import { Link } from "react-router-dom";
-import ReactMarkdown from "react-markdown";
+import { Link, useNavigate } from "react-router-dom";
 
 const BACKEND_URL = import.meta.env.VITE_BASE_URL;
 
@@ -24,6 +23,8 @@ const AllBlogs: React.FC = () => {
   const [blogs, setAllBlogs] = useState<Blog[]>([]);
   const [loading, setLoading] = useState(false);
   const token = localStorage.getItem("token");
+  const navigate = useNavigate();
+
   const getAllBlogs = async () => {
     try {
       setLoading(true);
@@ -36,6 +37,7 @@ const AllBlogs: React.FC = () => {
       setLoading(false);
     } catch (error) {
       setError("Cannot fetch the blogs");
+      navigate("/");
     }
   };
 
@@ -44,11 +46,18 @@ const AllBlogs: React.FC = () => {
   }, []);
 
   return (
-    <div className="flex flex-col bg-gray-100 h-screen">
+    <div className="flex flex-col bg-gray-100 h-full">
       <Navbar />
+      <div>
+        <div className="flex flex-row mt-20 justify-center items-center">
+        <h1 className="font-extrabold text-slate-900 text-center text-4xl">
+          All Blogs
+        </h1>
+        </div>
+      </div>
       {error && <p className="text-red-500">{error}</p>}
       {loading && <Skeleton />}
-      <div className="mt-24 flex flex-col items-center justify-center">
+      <div className="mt-5 flex flex-col items-center justify-center">
         {loading ? (
           <>
             <Skeleton className="w-1/2 h-24 mb-4" />

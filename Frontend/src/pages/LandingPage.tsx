@@ -1,13 +1,13 @@
 import React from "react";
 import { Button } from "@/components/ui/button";
 import { Link } from "react-router-dom";
-import { QuotesCard } from "@/components/quotesHalf";
+import { QuotesCardComponent } from "@/components/quotesHalf";
 
 const LandingPage: React.FC = () => {
   return (
     <div className="grid grid-cols-2 h-screen">
       
-      <QuotesCard />
+      <QuotesCardComponent />
       <div className="flex flex-col justify-center items-center bg-white">
         <div className="mb-8 text-center">
           <h1 className="text-4xl mb-6 font-bold">BloggingApp</h1>

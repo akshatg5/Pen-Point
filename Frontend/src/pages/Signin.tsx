@@ -3,7 +3,7 @@ import axios from "axios";
 import { Input } from "@/components/ui/input";
 import { Button } from "@/components/ui/button";
 import { Link, useNavigate } from "react-router-dom";
-import { QuotesCard } from "@/components/quotesHalf";
+import { QuotesCardComponent } from "@/components/quotesHalf";
 
 const BACKEND_URL = import.meta.env.VITE_BASE_URL;
 
@@ -36,7 +36,7 @@ const SignIn: React.FC = () => {
 
   return (
     <div className="grid grid-cols-2 h-screen">
-      <QuotesCard />
+      <QuotesCardComponent />
       <div className="flex flex-col justify-center items-center bg-white">
         <div className="mb-8 text-center">
           <h1 className="text-3xl font-bold mb-2">Sign In</h1>

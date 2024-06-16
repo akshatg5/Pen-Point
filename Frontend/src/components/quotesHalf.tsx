@@ -1,6 +1,17 @@
 import { Link } from "react-router-dom";
+import React, { memo } from "react"
+import { quotes } from "@/lib/quotes"
 
-export const QuotesCard = () => {
+const constGetRandomQuote = () => {
+  const randomIndex = Math.floor(Math.random() * quotes.length )
+  return quotes[randomIndex]
+}
+
+const QuotesCard = () => {
+
+  
+  const randomQuote = constGetRandomQuote()
+
   return (
     <div className="bg-gray-100 flex items-center justify-center">
       <div className="w-3/4">
@@ -24,12 +35,13 @@ export const QuotesCard = () => {
             </Link>
           </div>
           <blockquote className="text-gray-600 italic">
-            "The customer service I received was exceptional. The support team
-            went above and beyond to address my concerns."
+            "{randomQuote.quoteText}"
           </blockquote>
-          <p className="font-bold mt-2">Julia Wingfield, CEO - Acme Inc.</p>
+          <p className="font-bold mt-2">{randomQuote.quoteAuthor}</p>
         </div>
       </div>
     </div>
   );
 };
+
+export const QuotesCardComponent = memo(QuotesCard);
