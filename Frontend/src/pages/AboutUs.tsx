@@ -122,7 +122,7 @@ const AboutUs: React.FC = () => {
         </svg>
       ),
       title: "Project By",
-      desc: "Project by Akshat Girdhar, made as a part of the 100xDevs Cohort by Harkirat Singh",
+      desc: "Project by Akshat Girdhar, made as a part of the 100xDevs Cohort by Harkirat Singh.",
     },
   ];
 

@@ -4,6 +4,7 @@ import { Input } from "@/components/ui/input";
 import { Button } from "@/components/ui/button";
 import { useNavigate } from "react-router-dom";
 import { QuotesCardComponent } from "@/components/quotesHalf";
+import { LoadingSpinner } from "@/components/loadingSpinner";
 
 const BACKEND_URL = import.meta.env.VITE_BASE_URL;
 
@@ -14,12 +15,14 @@ const SignUp: React.FC = () => {
   const [lastName, setLastName] = useState("");
   const [username, setUsername] = useState("");
   const [error, setError] = useState("");
+  const [loading,setLoading] = useState(false)
   const navigate = useNavigate()
 
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
 
     try {
+      setLoading(true)
       const response = await axios.post(
         `${BACKEND_URL}/api/v1/auth/signup`,
         {
@@ -33,13 +36,8 @@ const SignUp: React.FC = () => {
 
       const { jwt } = response.data;
       localStorage.setItem("token", jwt);
-      alert("Signup Successful!");
       navigate('/blogs')
-      setEmail("");
-      setPassword("");
-      setFirstName("");
-      setLastName("");
-      setUsername("");
+      setLoading(false)
     } catch (err) {
       console.error(err);
       setError("An error occurred during sign-up");
@@ -131,6 +129,9 @@ const SignUp: React.FC = () => {
           </div>
         </form>
       </div>
+      {loading && (<div className="absolute inset-0 flex justify-center items-center bg-white bg-opacity-75 z-10">
+        <LoadingSpinner className="" />
+      </div>)}
     </div>
   );
 };

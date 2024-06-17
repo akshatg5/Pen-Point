@@ -46,7 +46,7 @@ const AllBlogs: React.FC = () => {
   }, []);
 
   return (
-    <div className="flex flex-col bg-gray-100 h-full">
+    <div className="flex flex-col bg-gray-100 h-screen">
       <Navbar />
       <div>
         <div className="flex flex-row mt-20 justify-center items-center">
@@ -57,7 +57,7 @@ const AllBlogs: React.FC = () => {
       </div>
       {error && <p className="text-red-500">{error}</p>}
       {loading && <Skeleton />}
-      <div className="mt-5 flex flex-col items-center justify-center">
+      <div className="mt-2 flex flex-col items-center justify-center">
         {loading ? (
           <>
             <Skeleton className="w-1/2 h-24 mb-4" />

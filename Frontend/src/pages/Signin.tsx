@@ -4,6 +4,7 @@ import { Input } from "@/components/ui/input";
 import { Button } from "@/components/ui/button";
 import { useNavigate } from "react-router-dom";
 import { QuotesCardComponent } from "@/components/quotesHalf";
+import { LoadingSpinner } from "@/components/loadingSpinner";
 
 const BACKEND_URL = import.meta.env.VITE_BASE_URL;
 
@@ -11,21 +12,21 @@ const SignIn: React.FC = () => {
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
   const [error, setError] = useState("");
-  const navigate = useNavigate()
+  const [loading, setLoading] = useState(false);
+  const navigate = useNavigate();
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
 
     try {
-      const response = await axios.post(
-        `${BACKEND_URL}/api/v1/auth/signin`,
-        {
-          email,
-          password,
-        }
-      );
+      setLoading(true);
+      const response = await axios.post(`${BACKEND_URL}/api/v1/auth/signin`, {
+        email,
+        password,
+      });
       const { jwt } = response.data;
       localStorage.setItem("token", jwt);
-      navigate("/blogs")
+      setLoading(false);
+      navigate("/blogs");
       setEmail("");
       setPassword("");
     } catch (err) {
@@ -78,9 +79,13 @@ const SignIn: React.FC = () => {
               type="submit"
               className="bg-blue-500 hover:bg-blue-600 text-white font-bold py-2 px-4 rounded"
             >
-              Sign Up
+              Sign In
             </Button>
           </div>
+
+          { loading && (<div className="absolute inset-0 flex justify-center items-center bg-white bg-opacity-75 z-10" >
+            <LoadingSpinner className="" />
+          </div>)}
         </form>
       </div>
     </div>
