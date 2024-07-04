@@ -8,6 +8,7 @@ import { ReadBlogPage } from "./pages/ReadBlogPage.tsx";
 import AboutUs from "./pages/AboutUs.tsx";
 import Services from "./pages/Services.tsx";
 import ContactUs from "./pages/ContactUs.tsx";
+import EditBlogPost from "./pages/EditBlog.tsx";
 
 function App() {
   return (
@@ -23,6 +24,7 @@ function App() {
             <Route path='/addblog' element={<CreateBlogPost/>} />
             <Route path='/blogs' element={<AllBlogs/>} />
             <Route path='/blog/:blogId' element={<ReadBlogPage/>} />
+            <Route path='/editBlog/:blogId' element={<EditBlogPost/>} />
         </Routes>
       </BrowserRouter>
     </>
