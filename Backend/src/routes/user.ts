@@ -37,15 +37,35 @@ userRouter.get('/whoami',async (c) => {
     datasourceUrl: c.env.DATABASE_URL,
   }).$extends(withAccelerate());
 
+  const authorization = c.req.header('authorization');
+
+  if (!authorization) {
+    c.status(401)
+    return c.json({error : "Unauthorized!"})
+  }
+
   try {
-    const userId = c.get("userId")
+    const user = await verify(authorization,c.env.JWT_SECRET)
+
+    if (typeof user.id !== 'string') {
+      c.status(401);
+      return c.json({error : "Unauthorized!"})
+    }
+
+    const userId = user.id;
     const userDetails = await prisma.user.findFirst({
       where : {id : userId},
-      select : {id:true,firstName:true,lastName:true,username:true}
+      select : {id:true,firstName:true,lastName:true,username:true,email:true}
     })
+
+    if (!userDetails) {
+      c.status(404);
+      return c.json({ error: "User not found" });
+    }
 
     return c.json(userDetails);
   } catch (error) {
-    return c.json({error})
-  }
+    c.status(401);
+    return c.json({error : "unauthorized!"})
+  }  
 })

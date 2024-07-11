@@ -67,7 +67,19 @@ blogRouter.put("/:id", async (c) => {
   }).$extends(withAccelerate());
 
   try {
-    const blog = await prisma.post.update({
+    const userId = c.var.userId;
+
+    const blog = await prisma.post.findUnique({
+      where : { id : blogId },
+      select : {authorId : true}
+    })
+
+    if (!blog) {
+      c.status(401);
+      return c.json("You are not authorized to edit the blog!")
+    }
+
+    const updatedBlog = await prisma.post.update({
       where: { id: blogId },
       data: {
         title: body.title,
@@ -75,7 +87,7 @@ blogRouter.put("/:id", async (c) => {
       },
     });
 
-    return c.json({ blogDetails: blog });
+    return c.json({ blogDetails: updatedBlog });
   } catch (error) {
     c.status(400);
     return c.json({ message: "Cannot edit the blog!" });
@@ -98,6 +110,7 @@ blogRouter.get("/page/:id", async (c) => {
         publishedAt : true,
         publishedBy : {
           select : {
+            id:true,
             firstName : true,
             lastName : true,
             username : true,
@@ -139,6 +152,9 @@ blogRouter.get("/bulk", async (c) => {
     const allBlogs = await prisma.post.findMany({
       skip: skip,
       take: pageSize,
+      orderBy : {
+        publishedAt : 'desc'
+      },
       select: {
         id: true,
         title: true,

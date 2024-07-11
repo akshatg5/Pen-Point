@@ -33,7 +33,8 @@ const AllBlogs: React.FC = () => {
           Authorization: `${token}`,
         },
       });
-      setAllBlogs(allBlogs.data.allBlogs);
+      const blogsSortedByPublishedDate = allBlogs.data.allBlogs.sort((a:any,b:any) => a.publishedAt - b.publishedAt)
+      setAllBlogs(blogsSortedByPublishedDate);
       setLoading(false);
     } catch (error) {
       setError("Cannot fetch the blogs");
@@ -46,7 +47,7 @@ const AllBlogs: React.FC = () => {
   }, []);
 
   return (
-    <div className="flex flex-col bg-gray-100 h-screen">
+    <div className="flex flex-col bg-gray-100 h-full">
       <Navbar />
       <div>
         <div className="flex flex-row mt-20 justify-center items-center">

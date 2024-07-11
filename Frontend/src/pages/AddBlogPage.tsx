@@ -26,7 +26,7 @@ const CreateBlogPost: React.FC = () => {
         `${BACKEND_URL}/api/v1/blog`,
         {
           title,
-          content: value, // Use the value from MDEditor as the content
+          content: value, 
         },
         {
           headers: {
