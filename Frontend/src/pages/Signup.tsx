@@ -15,29 +15,26 @@ const SignUp: React.FC = () => {
   const [lastName, setLastName] = useState("");
   const [username, setUsername] = useState("");
   const [error, setError] = useState("");
-  const [loading,setLoading] = useState(false)
-  const navigate = useNavigate()
+  const [loading, setLoading] = useState(false);
+  const navigate = useNavigate();
 
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
 
     try {
-      setLoading(true)
-      const response = await axios.post(
-        `${BACKEND_URL}/api/v1/auth/signup`,
-        {
-          email,
-          password,
-          firstName,
-          lastName,
-          username
-        }
-      );
+      setLoading(true);
+      const response = await axios.post(`${BACKEND_URL}/api/v1/auth/signup`, {
+        email,
+        password,
+        firstName,
+        lastName,
+        username,
+      });
 
       const { jwt } = response.data;
       localStorage.setItem("token", jwt);
-      navigate('/blogs')
-      setLoading(false)
+      navigate("/blogs");
+      setLoading(false);
     } catch (err) {
       console.error(err);
       setError("An error occurred during sign-up");
@@ -45,8 +42,7 @@ const SignUp: React.FC = () => {
   };
 
   return (
-    <div className="grid grid-cols-2 h-screen">
-      <QuotesCardComponent />
+    <div className="grid grid-cols-2 h-screen max-sm:grid-cols-1">
       <div className="flex flex-col justify-center items-center bg-white">
         <div className="mb-8 text-center">
           <h1 className="text-3xl font-bold mb-2">Create an Account</h1>
@@ -129,9 +125,12 @@ const SignUp: React.FC = () => {
           </div>
         </form>
       </div>
-      {loading && (<div className="absolute inset-0 flex justify-center items-center bg-white bg-opacity-75 z-10">
-        <LoadingSpinner className="" />
-      </div>)}
+      {loading && (
+        <div className="absolute inset-0 flex justify-center items-center bg-white bg-opacity-75 z-10">
+          <LoadingSpinner className="" />
+        </div>
+      )}
+      <QuotesCardComponent />
     </div>
   );
 };

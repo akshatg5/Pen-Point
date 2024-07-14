@@ -36,8 +36,7 @@ const SignIn: React.FC = () => {
   };
 
   return (
-    <div className="grid grid-cols-2 h-screen">
-      <QuotesCardComponent />
+    <div className="grid grid-cols-2 h-screen max-sm:grid-cols-1">
       <div className="flex flex-col justify-center items-center bg-white">
         <div className="mb-8 text-center">
           <h1 className="text-3xl font-bold mb-2">Sign In</h1>
@@ -83,11 +82,14 @@ const SignIn: React.FC = () => {
             </Button>
           </div>
 
-          { loading && (<div className="absolute inset-0 flex justify-center items-center bg-white bg-opacity-75 z-10" >
-            <LoadingSpinner className="" />
-          </div>)}
+          {loading && (
+            <div className="absolute inset-0 flex justify-center items-center bg-white bg-opacity-75 z-10">
+              <LoadingSpinner className="" />
+            </div>
+          )}
         </form>
       </div>
+      <QuotesCardComponent />
     </div>
   );
 };

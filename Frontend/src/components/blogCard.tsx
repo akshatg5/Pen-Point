@@ -21,7 +21,7 @@ export const BlogCard: React.FC<BlogCardProps> = ({
   lastName,
 }) => {
   return (
-    <div className="w-1/2  border flex justify-between items-center border-slate-400 rounded-2xl hover:shadow-xl p-4 my-2">
+    <div className="w-1/2 border flex justify-between items-center border-slate-400 rounded-2xl hover:shadow-xl p-4 my-2">
       <div>
         <Link to={toLink}>
           <div className="flex items-center">
