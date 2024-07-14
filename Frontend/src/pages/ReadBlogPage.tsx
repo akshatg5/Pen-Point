@@ -4,6 +4,7 @@ import { useEffect, useState } from "react";
 import { useNavigate, useParams } from "react-router-dom";
 import ReactMarkdown from "react-markdown";
 import remarkGfm from "remark-gfm";
+import { LoadingSpinner } from "@/components/loadingSpinner";
 
 const BACKEND_URL = import.meta.env.VITE_BASE_URL;
 
@@ -17,8 +18,10 @@ export const ReadBlogPage = () => {
     lastName: "",
   });
   const [publishedAt, setPublishedAt] = useState<Date | null>(null);
+  const [loading,setLoading] = useState<boolean>(false);
   const [userId, setUserId] = useState<string>("");
   const navigate = useNavigate();
+
   
   const rerouteToEditPage = () => {
     navigate(`/editBlog/${blogId}`);
@@ -41,6 +44,7 @@ export const ReadBlogPage = () => {
   const fetchBlog = async () => {
     try {
       const token = localStorage.getItem("token");
+      setLoading(true);
       const response = await axios.get(
         `${BACKEND_URL}/api/v1/blog/page/${blogId}`,
         {
@@ -57,6 +61,7 @@ export const ReadBlogPage = () => {
         lastName: response.data.publishedBy.lastName,
       });
       setPublishedAt(new Date(response.data.publishedAt));
+      setLoading(false);
     } catch {
       console.error("Cannot fetch the given blog!");
     }
@@ -71,6 +76,11 @@ export const ReadBlogPage = () => {
   return (
     <div className="bg-gray-200 mt-20 h-full flex flex-col">
       <Navbar />
+      {loading && (
+            <div className="absolute inset-0 flex justify-center items-center bg-white bg-opacity-75 z-10">
+              <LoadingSpinner className="" />
+            </div>
+          )}
       <div className="flex-grow flex flex-col items-center justify-center">
         <div className="bg-gray-200 w-1/2 text-center">
           <h1 className="text-6xl font-bold">{title}</h1>

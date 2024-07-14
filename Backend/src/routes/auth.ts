@@ -2,7 +2,7 @@ import { Hono } from "hono";
 import { PrismaClient } from "@prisma/client/edge";
 import { withAccelerate } from "@prisma/extension-accelerate";
 import { sign, verify } from "hono/jwt";
-import { signUpSchema,signInSchema } from '@akshatgirdhar/blogmodules'
+import { signUpSchema, signInSchema } from "@akshatgirdhar/blogmodules";
 
 export const authRouter = new Hono<{
   Bindings: {
@@ -22,12 +22,12 @@ authRouter.post("/signup", async (c) => {
 
     // add zod validation in this
     const body = await c.req.json();
-    const { success } = signUpSchema.safeParse(body)
+    const { success } = signUpSchema.safeParse(body);
     if (!success) {
-        c.status(403)
-        return c.json({
-            message : "Invalid inputs."
-        })
+      c.status(403);
+      return c.json({
+        message: "Invalid inputs.",
+      });
     }
     const existingUser = await prisma.user.findUnique({
       where: { email: body.email },
@@ -43,12 +43,14 @@ authRouter.post("/signup", async (c) => {
     const encoder = new TextEncoder();
     const hashedPassword = await crypto.subtle.digest(
       {
-        name : 'SHA-256'
+        name: "SHA-256",
       },
       encoder.encode(body.password)
-    )
+    );
 
-    const hashedPasswordString = Array.from(new Uint8Array(hashedPassword)).map(b => b.toString(16).padStart(2,'0')).join('')
+    const hashedPasswordString = Array.from(new Uint8Array(hashedPassword))
+      .map((b) => b.toString(16).padStart(2, "0"))
+      .join("");
 
     const user = await prisma.user.create({
       data: {
@@ -79,9 +81,9 @@ authRouter.post("/signin", async (c) => {
 
     const secret = c.env.JWT_SECRET;
     const body = await c.req.json();
-    const success = signInSchema.safeParse(body)
+    const success = signInSchema.safeParse(body);
     if (!success) {
-        return c.json({message : "Invalid inputs"})
+      return c.json({ message: "Invalid inputs" });
     }
     const user = await prisma.user.findUnique({
       where: {
@@ -95,15 +97,20 @@ authRouter.post("/signin", async (c) => {
     }
 
     const encoder = new TextEncoder();
-    const hashedPassword = await crypto.subtle.digest('SHA-256',encoder.encode(body.password))
+    const hashedPassword = await crypto.subtle.digest(
+      "SHA-256",
+      encoder.encode(body.password)
+    );
 
-    const hashedPasswordString = Array.from(new Uint8Array(hashedPassword)).map(b => b.toString(16).padStart(2,'0')).join('');
+    const hashedPasswordString = Array.from(new Uint8Array(hashedPassword))
+      .map((b) => b.toString(16).padStart(2, "0"))
+      .join("");
 
     if (hashedPasswordString !== user.password) {
-      c.status(401)
+      c.status(401);
       return c.json({
-        error : "Invalid email or password.Try again!"
-      })
+        error: "Invalid email or password.Try again!",
+      });
     }
 
     const jwtToken = await sign({ id: user.id }, secret);
