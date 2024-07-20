@@ -60,12 +60,12 @@ const AllBlogs: React.FC = () => {
       {loading && <Skeleton />}
       <div className="mt-2 flex flex-col items-center justify-center">
         {loading ? (
-          <>
+          <div >
             <Skeleton className="w-1/2 h-24 mb-4" />
             <Skeleton className="w-1/2 h-24 mb-4" />
             <Skeleton className="w-1/2 h-24 mb-4" />
             <Skeleton className="w-1/2 h-24 mb-4" />
-          </>
+          </div>
         ) : blogs.length === 0 ? (
           <Link to={"/addblog"}>
             <h1 className="mt-10 text-center text-2xl font-bold underline">

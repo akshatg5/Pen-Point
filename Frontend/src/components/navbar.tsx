@@ -17,7 +17,8 @@ export const Navbar: React.FC = () => {
   };
 
   return (
-    <nav className="bg-white dark:bg-gray-900 fixed w-full z-20 top-0 left-0 border-b border-gray-200 dark:border-gray-600">
+    <div className="flex justify-center mb-8 shadow-md">
+    <nav className="bg-transparent backdrop-blur-xl fixed w-[55rem] z-20 top-5 rounded-full border border-black">
       <div className="p-4 md:px-8 flex flex-wrap items-center justify-between max-sm:justify-center">
         <a
           href="/blogs"
@@ -49,7 +50,7 @@ export const Navbar: React.FC = () => {
           </Link>
           <div className="">
             <Button type="button" onClick={handleLogOut} className="mx-4">
-              LogOut
+              Logout
             </Button>
           </div>
           <button
@@ -83,7 +84,7 @@ export const Navbar: React.FC = () => {
           } w-full md:flex md:w-auto md:order-1`}
           id="navbar-sticky"
         >
-          <ul className="flex flex-col md:flex-row md:space-x-8 p-4 md:p-0 mt-4 md:mt-0 font-medium border border-gray-100 md:border-0 rounded-lg bg-gray-50 md:bg-white dark:bg-gray-800 md:dark:bg-gray-900 dark:border-gray-700">
+          <ul className="flex flex-col md:flex-row md:space-x-8 p-4 md:p-0 mt-4 md:mt-0 font-medium border border-gray-100 md:border-0 rounded-lg dark:bg-gray-800 md:dark:bg-gray-900 dark:border-gray-700">
             <li>
               <a
                 href="/blogs"
@@ -136,6 +137,7 @@ export const Navbar: React.FC = () => {
           </ul>
         </div>
       </div>
-    </nav>
+      </nav>
+    </div>
   );
 };
