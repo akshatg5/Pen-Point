@@ -17,16 +17,17 @@ export const ReadBlogPage = () => {
     firstName: "",
     lastName: "",
   });
+  const [postLiked, setPostLiked] = useState<boolean>();
+  const [likeCount, setLikeCount] = useState<number>(0);
   const [publishedAt, setPublishedAt] = useState<Date | null>(null);
-  const [loading,setLoading] = useState<boolean>(false);
+  const [loading, setLoading] = useState<boolean>(false);
   const [userId, setUserId] = useState<string>("");
   const navigate = useNavigate();
 
-  
   const rerouteToEditPage = () => {
     navigate(`/editBlog/${blogId}`);
   };
-  
+
   const fetchUserId = async () => {
     try {
       const token = localStorage.getItem("token");
@@ -40,7 +41,61 @@ export const ReadBlogPage = () => {
       console.error("Cannot fetch the user id!");
     }
   };
-  
+
+  const checkLikeStatusForUser = async (blogId: any) => {
+    try {
+      const token = localStorage.getItem("token");
+      const response = await axios.get(
+        `${BACKEND_URL}/api/v1/like/userHasLikedPost/${blogId}`,
+        {
+          headers: {
+            Authorization: `${token}`,
+          },
+        }
+      );
+      setPostLiked(response.data.liked);
+    } catch (error) {
+      console.error("Error in fetching the like Status!",error);
+    }
+  };
+
+  const createLike = async (blogId: any) => {
+    try {
+      const token = localStorage.getItem("token");
+      const response = await axios.post(
+        `${BACKEND_URL}/api/v1/like/createLike`,
+        { postId: blogId },
+        {
+          headers: {
+            Authorization: `${token}`,
+          },
+        }
+      );
+      alert("Post Liked!")
+    } catch (error) {
+      console.error("Error in creating like for the user!",error);
+      alert('You cannot like a post twice,come on!')
+    }
+  };
+
+  const fetchLikeCount = async (blogId: any) => {
+    try {
+      const token = localStorage.getItem("token");
+      const response = await axios.get(
+        `${BACKEND_URL}/api/v1/like/getLikesOnPost/${blogId}`,
+        {
+          headers: {
+            Authorization: `${token}`,
+          },
+        }
+      );
+
+      setLikeCount(response.data.getLikesCountOnPost);
+    } catch (error) {
+      console.error("Cannot fetch likes on post.", error);
+    }
+  };
+
   const fetchBlog = async () => {
     try {
       const token = localStorage.getItem("token");
@@ -66,21 +121,25 @@ export const ReadBlogPage = () => {
       console.error("Cannot fetch the given blog!");
     }
   };
-  console.log(author)
+  console.log(author);
 
   useEffect(() => {
+    setLoading(true)
     fetchUserId();
     fetchBlog();
+    fetchLikeCount(blogId);
+    checkLikeStatusForUser(blogId);
+    setLoading(false)
   }, []);
 
   return (
     <div className="bg-gray-200 mt-20 h-full flex flex-col">
       <Navbar />
       {loading && (
-            <div className="absolute inset-0 flex justify-center items-center bg-white bg-opacity-75 z-10">
-              <LoadingSpinner className="" />
-            </div>
-          )}
+        <div className="absolute inset-0 flex justify-center items-center bg-white bg-opacity-75 z-10">
+          <LoadingSpinner className="" />
+        </div>
+      )}
       <div className="flex-grow flex flex-col items-center justify-center">
         <div className="bg-gray-200 w-1/2 text-center">
           <h1 className="text-6xl font-bold">{title}</h1>
@@ -107,24 +166,41 @@ export const ReadBlogPage = () => {
         </div>
         <hr className="border border-black mt-4 w-[40rem]"></hr>
         <div className="py-2 flex justify-center items-center">
-          <div className="mr-10">
-            <button className="flex justify-center">
-              <svg
-                xmlns="http://www.w3.org/2000/svg"
-                fill="none"
-                viewBox="0 0 24 24"
-                strokeWidth={1.5}
-                stroke="currentColor"
-                className="size-6"
-              >
-                <path
-                  strokeLinecap="round"
-                  strokeLinejoin="round"
-                  d="M21 8.25c0-2.485-2.099-4.5-4.688-4.5-1.935 0-3.597 1.126-4.312 2.733-.715-1.607-2.377-2.733-4.313-2.733C5.1 3.75 3 5.765 3 8.25c0 7.22 9 12 9 12s9-4.78 9-12Z"
-                />
-              </svg>
-              5
+          <div className="mr-10 flex">
+            <button className="flex justify-center" onClick={() => createLike(blogId)}>
+              {postLiked ? (
+                <svg
+                  xmlns="http://www.w3.org/2000/svg"
+                  fill="black"
+                  viewBox="0 0 24 24"
+                  strokeWidth={1.5}
+                  stroke="currentColor"
+                  className="size-6"
+                >
+                  <path
+                    strokeLinecap="round"
+                    strokeLinejoin="round"
+                    d="M21 8.25c0-2.485-2.099-4.5-4.688-4.5-1.935 0-3.597 1.126-4.312 2.733-.715-1.607-2.377-2.733-4.313-2.733C5.1 3.75 3 5.765 3 8.25c0 7.22 9 12 9 12s9-4.78 9-12Z"
+                  />
+                </svg>
+              ) : (
+                <svg
+                  xmlns="http://www.w3.org/2000/svg"
+                  fill="none"
+                  viewBox="0 0 24 24"
+                  strokeWidth={1.5}
+                  stroke="currentColor"
+                  className="size-6"
+                >
+                  <path
+                    strokeLinecap="round"
+                    strokeLinejoin="round"
+                    d="M21 8.25c0-2.485-2.099-4.5-4.688-4.5-1.935 0-3.597 1.126-4.312 2.733-.715-1.607-2.377-2.733-4.313-2.733C5.1 3.75 3 5.765 3 8.25c0 7.22 9 12 9 12s9-4.78 9-12Z"
+                  />
+                </svg>
+              )}
             </button>
+              {likeCount}
           </div>
           {author.id === userId && (
             <div className="ml-10">

@@ -5,6 +5,7 @@ import { blogRouter } from "./routes/blogs";
 import { statusRouter } from "./routes/checkStatus";
 import { cors } from "hono/cors"
 import { userRouter } from "./routes/user";
+import { likesRouter } from "./routes/likes";
 
 const app = new Hono<{
   Bindings: {
@@ -25,5 +26,6 @@ app.route('/',statusRouter)
 app.route('/api/v1/auth',authRouter)
 app.route('/api/v1/blog',blogRouter)
 app.route('/api/v1/user',userRouter)
+app.route('/api/v1/like',likesRouter)
 
 export default app;
