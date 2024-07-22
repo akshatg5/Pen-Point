@@ -48,8 +48,8 @@ const SignIn: React.FC = () => {
           </p>
         </div>
         {error && <p className="text-red-500">{error}</p>}
-        <form onSubmit={handleSubmit} className="w-96 max-sm:flex max-sm:justify-center max-sm:flex-col max-sm:mx-auto max-sm:ml-6">
-          <div className="mb-4">
+        <form onSubmit={handleSubmit} className="w-96 max-sm:flex max-sm:justify-center max-sm:flex-col">
+          <div className="mb-4 ml-4">
             <label htmlFor="email" className="block font-bold mb-2">
               Email
             </label>
@@ -61,7 +61,7 @@ const SignIn: React.FC = () => {
               className="w-full max-sm:w-3/4"
             />
           </div>
-          <div className="mb-4">
+          <div className="mb-4 ml-4">
             <label htmlFor="password" className="block font-bold mb-2">
               Password
             </label>
@@ -73,7 +73,7 @@ const SignIn: React.FC = () => {
               className="w-full max-sm:w-3/4"
             />
           </div>
-          <div className="text-center">
+          <div className="text-center flex justify-center items-center mx-auto">
             <Button
               type="submit"
               className="bg-blue-500 hover:bg-blue-600 text-white font-bold py-2 px-4 rounded"

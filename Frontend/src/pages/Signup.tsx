@@ -54,7 +54,7 @@ const SignUp: React.FC = () => {
           </p>
         </div>
         {error && <p className="text-red-500 mb-4">{error}</p>}
-        <form onSubmit={handleSubmit} className="w-96">
+        <form onSubmit={handleSubmit} className="w-96 max-sm:ml-4 max-sm:w-3/4">
           <div className="mb-4">
             <label htmlFor="email" className="block font-bold mb-2">
               Email
