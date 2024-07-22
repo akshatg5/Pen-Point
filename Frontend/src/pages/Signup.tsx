@@ -35,9 +35,14 @@ const SignUp: React.FC = () => {
       localStorage.setItem("token", jwt);
       navigate("/blogs");
       setLoading(false);
-    } catch (err) {
+    } catch (err: any) {
       console.error(err);
-      setError("An error occurred during sign-up");
+      setLoading(false);
+      if (err.response && err.response.status === 401) {
+        setError("Invalid Email or Password. Try again!");
+      } else {
+        setError("Error signing in,please try again or raise a ticket!");
+      }
     }
   };
 

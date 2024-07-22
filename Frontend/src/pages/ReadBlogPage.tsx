@@ -77,7 +77,6 @@ export const ReadBlogPage = () => {
       checkLikeStatusForUser(blogId)
       fetchLikeCount(blogId)
       setLoading(false)
-      alert("Post Liked!")
     } catch (error) {
       console.error("Error in creating like for the user!",error);
       alert('You cannot like a post twice,come on!')

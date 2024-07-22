@@ -29,9 +29,14 @@ const SignIn: React.FC = () => {
       navigate("/blogs");
       setEmail("");
       setPassword("");
-    } catch (err) {
+    } catch (err: any) {
+      setLoading(false);
       console.error(err);
-      setError("An error occurred during sign-in");
+      if (err.response && err.response.status === 401) {
+        setError("Invalid email or password. Try again!");
+      } else {
+        setError("Error signing in, please try again or raise a ticket!");
+      }
     }
   };
 
@@ -48,7 +53,10 @@ const SignIn: React.FC = () => {
           </p>
         </div>
         {error && <p className="text-red-500">{error}</p>}
-        <form onSubmit={handleSubmit} className="w-96 max-sm:flex max-sm:justify-center max-sm:flex-col">
+        <form
+          onSubmit={handleSubmit}
+          className="w-96 max-sm:flex max-sm:justify-center max-sm:flex-col"
+        >
           <div className="mb-4 ml-4">
             <label htmlFor="email" className="block font-bold mb-2">
               Email
