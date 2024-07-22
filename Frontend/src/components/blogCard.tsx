@@ -21,14 +21,16 @@ export const BlogCard: React.FC<BlogCardProps> = ({
   lastName,
 }) => {
   return (
-    <div className="w-1/2 border flex justify-between items-center border-slate-400 rounded-2xl hover:shadow-xl p-4 my-2">
+    <div className="w-1/2 max-sm:w-[90%] border flex justify-between items-center border-slate-400 rounded-2xl hover:shadow-xl p-4 my-2">
       <div>
         <Link to={toLink}>
           <div className="flex items-center">
-            <p className="text-slate-500">
-              {firstName} {" "} {lastName} {" "} ;
+            <p className="text-slate-500 max-sm:text-xs">
+              {firstName} {lastName} ;
             </p>
-            <p className="ml-2 text-slate-500">Published On {publishedAt.toLocaleDateString()}</p>
+            <p className="ml-2 max-sm:ml-0 max-sm:text-xs text-slate-500">
+              Published On {publishedAt.toLocaleDateString()}
+            </p>
           </div>
           <h5 className="text-2xl font-bold tracking-tight text-gray-900 dark:text-white mb-1">
             {title}
@@ -37,10 +39,10 @@ export const BlogCard: React.FC<BlogCardProps> = ({
             {content.slice(0, 100) + "..."}
           </ReactMarkdown>
           <div className="flex items-center">
-            <p className="font-xs text-slate-400">
+            <p className="font-xs text-slate-400 max-sm:text-xs">
               {`${Math.ceil(content.length / 1000)}`} minute read
             </p>
-            <Button className="my-2 ml-5">
+            <Button className="my-2 ml-5 max-sm:text-xs max-sm:my-1 max-sm:ml-2">
               Read more
               <svg
                 className="-mr-1 ml-2 h-4 w-4"
@@ -58,9 +60,9 @@ export const BlogCard: React.FC<BlogCardProps> = ({
           </div>
         </Link>
       </div>
-      <div className="ml-6">
-        <div className="bg-slate-700 rounded-full w-20 h-20 flex justify-center items-center">
-          <p>{title[0]}</p>
+      <div className="ml-6 max-sm:ml-1">
+        <div className="bg-slate-700 rounded-full w-20 h-20 max-sm:w-14 max-sm:h-14 flex justify-center items-center">
+          <p className="max-sm:text-xs text-white">{title[0]}</p>
         </div>
       </div>
     </div>

@@ -44,6 +44,7 @@ export const ReadBlogPage = () => {
 
   const checkLikeStatusForUser = async (blogId: any) => {
     try {
+      setLoading(true)
       const token = localStorage.getItem("token");
       const response = await axios.get(
         `${BACKEND_URL}/api/v1/like/userHasLikedPost/${blogId}`,
@@ -54,6 +55,7 @@ export const ReadBlogPage = () => {
         }
       );
       setPostLiked(response.data.liked);
+      setLoading(false)
     } catch (error) {
       console.error("Error in fetching the like Status!",error);
     }
@@ -61,8 +63,9 @@ export const ReadBlogPage = () => {
 
   const createLike = async (blogId: any) => {
     try {
+      setLoading(true)
       const token = localStorage.getItem("token");
-      const response = await axios.post(
+      await axios.post(
         `${BACKEND_URL}/api/v1/like/createLike`,
         { postId: blogId },
         {
@@ -71,6 +74,9 @@ export const ReadBlogPage = () => {
           },
         }
       );
+      checkLikeStatusForUser(blogId)
+      fetchLikeCount(blogId)
+      setLoading(false)
       alert("Post Liked!")
     } catch (error) {
       console.error("Error in creating like for the user!",error);
@@ -80,6 +86,7 @@ export const ReadBlogPage = () => {
 
   const fetchLikeCount = async (blogId: any) => {
     try {
+      setLoading(true)
       const token = localStorage.getItem("token");
       const response = await axios.get(
         `${BACKEND_URL}/api/v1/like/getLikesOnPost/${blogId}`,
@@ -91,6 +98,7 @@ export const ReadBlogPage = () => {
       );
 
       setLikeCount(response.data.getLikesCountOnPost);
+      setLoading(false)
     } catch (error) {
       console.error("Cannot fetch likes on post.", error);
     }
@@ -124,24 +132,22 @@ export const ReadBlogPage = () => {
   console.log(author);
 
   useEffect(() => {
-    setLoading(true)
     fetchUserId();
     fetchBlog();
     fetchLikeCount(blogId);
     checkLikeStatusForUser(blogId);
-    setLoading(false)
   }, []);
 
   return (
-    <div className="bg-gray-200 mt-20 h-full flex flex-col">
+    <div className="bg-gray-200 min-h-screen flex flex-col">
       <Navbar />
       {loading && (
         <div className="absolute inset-0 flex justify-center items-center bg-white bg-opacity-75 z-10">
           <LoadingSpinner className="" />
         </div>
       )}
-      <div className="flex-grow flex flex-col items-center justify-center">
-        <div className="bg-gray-200 w-1/2 text-center">
+      <div className="flex-grow flex flex-col mt-20 bg-gray-200 h-full items-center">
+        <div className=" w-1/2 text-center">
           <h1 className="text-6xl font-bold">{title}</h1>
         </div>
         <div className="">

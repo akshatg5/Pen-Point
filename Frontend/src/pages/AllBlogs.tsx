@@ -33,7 +33,9 @@ const AllBlogs: React.FC = () => {
           Authorization: `${token}`,
         },
       });
-      const blogsSortedByPublishedDate = allBlogs.data.allBlogs.sort((a:any,b:any) => a.publishedAt - b.publishedAt)
+      const blogsSortedByPublishedDate = allBlogs.data.allBlogs.sort(
+        (a: any, b: any) => a.publishedAt - b.publishedAt
+      );
       setAllBlogs(blogsSortedByPublishedDate);
       setLoading(false);
     } catch (error) {
@@ -47,33 +49,27 @@ const AllBlogs: React.FC = () => {
   }, []);
 
   return (
-    <div className="flex flex-col bg-gray-100 h-full">
+    <div className="flex flex-col bg-gray-200 min-h-screen">
       <Navbar />
-      <div>
-        <div className="flex flex-row mt-20 justify-center items-center">
-        <h1 className="font-extrabold text-slate-900 text-center text-4xl">
+      <div className="mt-20 flex justify-center items-center">
+        <h1 className="font-extrabold text-slate-900 text-center text-4xl sm:text-2xl">
           All Blogs
         </h1>
-        </div>
       </div>
       {error && <p className="text-red-500">{error}</p>}
       {loading && <Skeleton />}
-      <div className="mt-2 flex flex-col items-center justify-center">
+      <div className="mt-2 flex flex-col items-center justify-center px-2">
         {loading ? (
-          <div >
-            <Skeleton className="w-1/2 h-24 mb-4" />
-            <Skeleton className="w-1/2 h-24 mb-4" />
-            <Skeleton className="w-1/2 h-24 mb-4" />
-            <Skeleton className="w-1/2 h-24 mb-4" />
-          </div>
+          <>
+            <Skeleton className="w-full sm:w-4/5 h-24 mb-4" />
+            <Skeleton className="w-full sm:w-4/5 h-24 mb-4" />
+            <Skeleton className="w-full sm:w-4/5 h-24 mb-4" />
+            <Skeleton className="w-full sm:w-4/5 h-24 mb-4" />
+          </>
         ) : blogs.length === 0 ? (
-          <Link to={"/addblog"}>
-            <h1 className="mt-10 text-center text-2xl font-bold underline">
-              No blogs on your feed!
-            </h1>
-            <p className="text-center text-md font-semibold">
-              Write some yourself,come on!
-            </p>
+          <Link to={"/addblog"} className="text-center mt-10">
+            <h1 className="text-2xl font-bold underline">No blogs on your feed!</h1>
+            <p className="text-md font-semibold">Write some yourself, come on!</p>
           </Link>
         ) : (
           blogs.map((blog) => (
