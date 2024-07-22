@@ -48,7 +48,7 @@ const SignIn: React.FC = () => {
           </p>
         </div>
         {error && <p className="text-red-500">{error}</p>}
-        <form onSubmit={handleSubmit} className="w-96">
+        <form onSubmit={handleSubmit} className="w-96 max-sm:flex max-sm:justify-center max-sm:flex-col max-sm:mx-auto max-sm:ml-6">
           <div className="mb-4">
             <label htmlFor="email" className="block font-bold mb-2">
               Email
@@ -58,7 +58,7 @@ const SignIn: React.FC = () => {
               placeholder="Enter your email"
               value={email}
               onChange={(e) => setEmail(e.target.value)}
-              className="w-full"
+              className="w-full max-sm:w-3/4"
             />
           </div>
           <div className="mb-4">
@@ -70,7 +70,7 @@ const SignIn: React.FC = () => {
               placeholder="Enter your password"
               value={password}
               onChange={(e) => setPassword(e.target.value)}
-              className="w-full"
+              className="w-full max-sm:w-3/4"
             />
           </div>
           <div className="text-center">
