@@ -32,6 +32,7 @@ model Post {
   publishedBy User     @relation(fields: [authorId], references: [id])
   publishedAt DateTime @default(now())
   authorId    String
+  imageLink   String?
   likes       Likes[]  @relation("PostLikes")
 }
 
