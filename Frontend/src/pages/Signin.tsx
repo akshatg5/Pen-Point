@@ -14,6 +14,7 @@ const SignIn: React.FC = () => {
   const [error, setError] = useState("");
   const [loading, setLoading] = useState(false);
   const navigate = useNavigate();
+
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
 
@@ -89,6 +90,7 @@ const SignIn: React.FC = () => {
               Sign In
             </Button>
           </div>
+
 
           {loading && (
             <div className="absolute inset-0 flex justify-center items-center bg-white bg-opacity-75 z-10">

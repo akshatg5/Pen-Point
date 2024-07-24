@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
 import axios from "axios";
 import { Input } from "@/components/ui/input";
 import { Button } from "@/components/ui/button";
@@ -6,7 +6,15 @@ import { useNavigate } from "react-router-dom";
 import { QuotesCardComponent } from "@/components/quotesHalf";
 import { LoadingSpinner } from "@/components/loadingSpinner";
 
+// Add this declaration to avoid TypeScript errors
+declare global {
+  interface Window {
+    gapi: any;
+  }
+}
+
 const BACKEND_URL = import.meta.env.VITE_BASE_URL;
+const GOOGLE_CLIENT_ID = import.meta.env.VITE_GOOGLE_CLIENT_ID;
 
 const SignUp: React.FC = () => {
   const [email, setEmail] = useState("");
@@ -17,6 +25,43 @@ const SignUp: React.FC = () => {
   const [error, setError] = useState("");
   const [loading, setLoading] = useState(false);
   const navigate = useNavigate();
+
+  useEffect(() => {
+    window.gapi.load("auth2", () => {
+      window.gapi.auth2.init({
+        client_id: GOOGLE_CLIENT_ID,
+      }).then(() => {
+        window.gapi.signin2.render('google-signin-button', {
+          scope: 'profile email',
+          width: 240,
+          height: 50,
+          longtitle: true,
+          theme: 'dark',
+          onsuccess: handleGoogleSignIn,
+        });
+      });
+    });
+  }, []);
+
+  const handleGoogleSignIn = async (googleUser: any) => {
+    const idToken = googleUser.getAuthResponse().id_token;
+
+    try {
+      setLoading(true);
+      const response = await axios.post(`${BACKEND_URL}/api/v1/auth/google`, {
+        token: idToken,
+      });
+
+      const { jwt } = response.data;
+      localStorage.setItem("token", jwt);
+      navigate("/blogs");
+      setLoading(false);
+    } catch (err: any) {
+      console.error(err);
+      setLoading(false);
+      setError("Error signing in with Google, please try again or raise a ticket!");
+    }
+  };
 
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
@@ -41,7 +86,7 @@ const SignUp: React.FC = () => {
       if (err.response && err.response.status === 401) {
         setError("Invalid Email or Password. Try again!");
       } else {
-        setError("Error signing in,please try again or raise a ticket!");
+        setError("Error signing up, please try again or raise a ticket!");
       }
     }
   };
@@ -85,7 +130,7 @@ const SignUp: React.FC = () => {
             />
           </div>
           <div className="mb-6">
-            <label htmlFor="name" className="block font-bold mb-2">
+            <label htmlFor="username" className="block font-bold mb-2">
               Username
             </label>
             <Input
@@ -97,7 +142,7 @@ const SignUp: React.FC = () => {
             />
           </div>
           <div className="mb-6">
-            <label htmlFor="name" className="block font-bold mb-2">
+            <label htmlFor="firstName" className="block font-bold mb-2">
               First Name
             </label>
             <Input
@@ -109,7 +154,7 @@ const SignUp: React.FC = () => {
             />
           </div>
           <div className="mb-6">
-            <label htmlFor="name" className="block font-bold mb-2">
+            <label htmlFor="lastName" className="block font-bold mb-2">
               Last Name
             </label>
             <Input
@@ -129,6 +174,10 @@ const SignUp: React.FC = () => {
             </Button>
           </div>
         </form>
+        <div className="mt-4 text-center">
+          <h1 className="text-xl font-bold mb-2">Sign In With Google</h1>
+          <div id="google-signin-button"></div>
+        </div>
       </div>
       {loading && (
         <div className="absolute inset-0 flex justify-center items-center bg-white bg-opacity-75 z-10">
