@@ -22,6 +22,7 @@ export const ReadBlogPage = () => {
   const [publishedAt, setPublishedAt] = useState<Date | null>(null);
   const [loading, setLoading] = useState<boolean>(false);
   const [userId, setUserId] = useState<string>("");
+  const [imageLink,setImageLink] = useState<string>("")
   const navigate = useNavigate();
 
   const rerouteToEditPage = () => {
@@ -117,6 +118,7 @@ export const ReadBlogPage = () => {
       );
       setTitle(response.data.title);
       setContent(response.data.content);
+      setImageLink(response.data.imageLink);
       setAuthor({
         id: response.data.publishedBy.id,
         firstName: response.data.publishedBy.firstName,
@@ -169,7 +171,7 @@ export const ReadBlogPage = () => {
             </div>
           </div>
         </div>
-        <hr className="border border-black mt-4 w-[40rem]"></hr>
+        <hr className="border border-black mt-4 w-[40rem] max-sm:w-full"></hr>
         <div className="py-2 flex justify-center items-center">
           <div className="mr-10 flex">
             <button className="flex justify-center" onClick={() => createLike(blogId)}>
@@ -232,7 +234,10 @@ export const ReadBlogPage = () => {
             </div>
           )}
         </div>
-        <hr className="border border-black w-[40rem]"></hr>
+        <hr className="border border-black w-[40rem] max-sm:w-full"></hr>
+        <div className="w-1/2 text-center my-4 rounded-xl">
+          <img src={imageLink} alt={`${title}`} className="rounded-xl"/>
+        </div>
         <div className=" mt-8 prose prose-lg mb-6">
           <ReactMarkdown remarkPlugins={[remarkGfm]}>{content}</ReactMarkdown>
         </div>

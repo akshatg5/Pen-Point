@@ -1,21 +1,36 @@
 .w-md-editor {
-    background-color: #ffffff; /* White background */
-    color: #333333; /* Dark text color */
-    border: 1px solid #d1d5db; /* Light gray border */
-    border-radius: 4px; /* Rounded corners */
-    padding: 10px; /* Padding inside the editor */
-    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1); /* Soft shadow */
-    min-height: 300px; /* Minimum height */
-    font-size: 14px; /* Font size */
-  }
+  background-color: #ffffff; /* White background */
+  color: #333333; /* Dark text color */
+  border: 1px solid #d1d5db; /* Light gray border */
+  border-radius: 4px; /* Rounded corners */
+  padding: 10px; /* Padding inside the editor */
+  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1); /* Soft shadow */
+  min-height: 300px; /* Minimum height */
+  font-size: 14px; /* Font size */
+}
 
+.wmde-markdown {
+  background-color: #ffffff; /* White background */
+  color: #333333; /* Dark text color */
+  border: 1px solid #d1d5db; /* Light gray border */
+  border-top: none; /* Remove top border for preview */
+  border-radius: 0 0 4px 4px; /* Rounded bottom corners */
+  padding: 10px; /* Padding inside the preview */
+  font-size: 14px; /* Font size */
+  min-height: 100px; /* Minimum height */
+}
+
+/* Add responsiveness */
+@media (max-width: 1024px) {
+  .w-md-editor,
   .wmde-markdown {
-    background-color: #ffffff; /* White background */
-    color: #333333; /* Dark text color */
-    border: 1px solid #d1d5db; /* Light gray border */
-    border-top: none; /* Remove top border for preview */
-    border-radius: 0 0 4px 4px; /* Rounded bottom corners */
-    padding: 10px; /* Padding inside the preview */
-    font-size: 14px; /* Font size */
-    min-height: 100px; /* Minimum height */
+    min-height: 200px; /* Adjust height for smaller screens */
   }
+}
+
+@media (max-width: 768px) {
+  .w-md-editor,
+  .wmde-markdown {
+    min-height: 150px; /* Adjust height for mobile screens */
+  }
+}

@@ -49,6 +49,7 @@ blogRouter.post("/", async (c) => {
       title: body.title,
       content: body.content,
       authorId: authorId,
+      imageLink : body.imageLink
     },
   });
 
@@ -107,6 +108,7 @@ blogRouter.get("/page/:id", async (c) => {
       select : {
         title : true,
         content : true,
+        imageLink : true,
         publishedAt : true,
         publishedBy : {
           select : {
@@ -159,6 +161,7 @@ blogRouter.get("/bulk", async (c) => {
         id: true,
         title: true,
         content: true,
+        imageLink:true,
         authorId: true,
         publishedAt: true,
         publishedBy: {
