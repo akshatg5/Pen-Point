@@ -35,9 +35,12 @@ const ProtectedRoute = ({ children }: { children: React.ReactNode }) => {
   }, []);
 
   if (loading) {
-    return <div className="absolute inset-0 flex justify-center items-center bg-white bg-opacity-75 z-10">
-    <LoadingSpinner className="" />
-  </div>; }
+    return (
+      <div className="absolute inset-0 flex justify-center items-center bg-white bg-opacity-75 z-10">
+        <LoadingSpinner className="" />
+      </div>
+    );
+  }
 
   if (!userId) {
     return <Navigate to="/" replace />;

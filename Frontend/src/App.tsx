@@ -1,5 +1,5 @@
 import { BrowserRouter, Route, Routes } from "react-router-dom";
-import SignUp from './pages/Signup';
+import SignUp from "./pages/Signup";
 import SignIn from "./pages/Signin.tsx";
 import CreateBlogPost from "./pages/AddBlogPage.tsx";
 import AllBlogs from "./pages/AllBlogs.tsx";
@@ -21,10 +21,38 @@ function App() {
         <Route path="/aboutus" element={<AboutUs />} />
         <Route path="/services" element={<Services />} />
         <Route path="/contactus" element={<ContactUs />} />
-        <Route path="/addblog" element={<ProtectedRoute><CreateBlogPost /></ProtectedRoute>} />
-        <Route path="/blogs" element={<ProtectedRoute><AllBlogs /></ProtectedRoute>}/>
-        <Route path="/blog/:blogId" element={<ProtectedRoute><ReadBlogPage /></ProtectedRoute>} />
-        <Route path="/editBlog/:blogId" element={<ProtectedRoute><EditBlogPost /></ProtectedRoute>} />
+        <Route
+          path="/addblog"
+          element={
+            <ProtectedRoute>
+              <CreateBlogPost />
+            </ProtectedRoute>
+          }
+        />
+        <Route
+          path="/blogs"
+          element={
+            <ProtectedRoute>
+              <AllBlogs />
+            </ProtectedRoute>
+          }
+        />
+        <Route
+          path="/blog/:blogId"
+          element={
+            <ProtectedRoute>
+              <ReadBlogPage />
+            </ProtectedRoute>
+          }
+        />
+        <Route
+          path="/editBlog/:blogId"
+          element={
+            <ProtectedRoute>
+              <EditBlogPost />
+            </ProtectedRoute>
+          }
+        />
       </Routes>
     </BrowserRouter>
   );
