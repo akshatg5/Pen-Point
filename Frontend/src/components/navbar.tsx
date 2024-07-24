@@ -47,7 +47,7 @@ export const Navbar: React.FC = () => {
       <nav className="bg-transparent backdrop-blur-xl fixed w-full md:w-[55rem] z-20 top-5 rounded-full border border-black max-sm:border-0">
         <div className="p-4 md:px-8 flex flex-wrap items-center justify-between">
           <a
-            href="/blogs"
+            href="/"
             className="flex items-center space-x-3 rtl:space-x-reverse"
           >
             <svg
@@ -127,7 +127,7 @@ export const Navbar: React.FC = () => {
                   } md:dark:text-blue-500`}
                   aria-current="page"
                 >
-                  Home
+                  Blogs
                 </a>
               </li>
               <li>
