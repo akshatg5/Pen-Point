@@ -9,7 +9,7 @@ export const Navbar: React.FC = () => {
   const location = useLocation();
   const navigate = useNavigate();
   const [isMenuOpen, setIsMenuOpen] = useState(false);
-  const [userId, setUserId] = useState<string>("");
+  const [userId, setUserId] = useState<string | null>(null);
 
   const fetchUserId = async () => {
     try {
@@ -20,8 +20,12 @@ export const Navbar: React.FC = () => {
         },
       });
       setUserId(response.data.id);
-    } catch (error) {
-      console.error("Cannot fetch the user id!");
+    } catch (error: any) {
+      if (error.response.status === 401) {
+        setUserId(null);
+      } else {
+        console.error("Internal Server Error");
+      }
     }
   };
 
@@ -31,8 +35,8 @@ export const Navbar: React.FC = () => {
   };
 
   useEffect(() => {
-    fetchUserId()
-  },[])
+    fetchUserId();
+  }, []);
 
   const toggleMenu = () => {
     setIsMenuOpen(!isMenuOpen);
@@ -70,18 +74,17 @@ export const Navbar: React.FC = () => {
                 Get started
               </Button>
             </Link>
-            {
-              userId && location.pathname !== "/" &&
-              <div className="">
-              <Button
-                type="button"
-                onClick={handleLogOut}
-                className="mx-2 max-sm:hidden"
+            {userId && location.pathname !== "/" && (
+              <div>
+                <Button
+                  type="button"
+                  onClick={handleLogOut}
+                  className="mx-2 max-sm:hidden"
                 >
-                Logout
-              </Button>
-            </div>
-              }
+                  Logout
+                </Button>
+              </div>
+            )}
             <button
               type="button"
               className="inline-flex items-center p-2 w-10 h-10 justify-center text-sm text-gray-500 rounded-lg md:hidden hover:bg-gray-100 focus:outline-none focus:ring-2 focus:ring-gray-200 dark:text-gray-400 dark:hover:bg-gray-700 dark:focus:ring-gray-600"
@@ -163,33 +166,35 @@ export const Navbar: React.FC = () => {
                   Contact
                 </a>
               </li>
-              <li>
+              <li className="lg:hidden">
                 <Link to="/addblog">
-                  <button type="button" className={`lg:hidden py-2 px-3 rounded hover:bg-gray-100 md:hover:bg-transparent md:p-0 ${
-                    location.pathname === "/contactus"
-                      ? "text-blue-700"
-                      : "text-slate-900"
-                  } dark:text-white dark:hover:bg-gray-700 dark:hover:text-white md:dark:hover:bg-transparent dark:border-gray-700`}>
+                  <button
+                    type="button"
+                    className={`py-2 px-3 rounded hover:bg-gray-100 md:hover:bg-transparent md:p-0 ${
+                      location.pathname === "/contactus"
+                        ? "text-blue-700"
+                        : "text-slate-900"
+                    } dark:text-white dark:hover:bg-gray-700 dark:hover:text-white md:dark:hover:bg-transparent dark:border-gray-700`}
+                  >
                     Get started
                   </button>
                 </Link>
-                {
-                  userId && location.pathname !== "/" &&
-                  <li>
+              </li>
+              {userId && location.pathname !== "/" && (
+                <li className="lg:hidden">
                   <button
                     type="button"
                     onClick={handleLogOut}
-                    className={`py-2 px-3 rounded hover:bg-gray-100 md:hover:bg-transparent md:p-0 lg:hidden ${
+                    className={`py-2 px-3 rounded hover:bg-gray-100 md:hover:bg-transparent md:p-0 ${
                       location.pathname === "/contactus"
-                      ? "text-blue-700"
-                      : "text-slate-900"
-                      } dark:text-white dark:hover:bg-gray-700 dark:hover:text-white md:dark:hover:bg-transparent dark:border-gray-700`}
-                      >
+                        ? "text-blue-700"
+                        : "text-slate-900"
+                    } dark:text-white dark:hover:bg-gray-700 dark:hover:text-white md:dark:hover:bg-transparent dark:border-gray-700`}
+                  >
                     Logout
                   </button>
                 </li>
-                  }
-              </li>
+              )}
             </ul>
           </div>
         </div>
