@@ -1,16 +1,38 @@
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 import { Button } from "./ui/button";
 import { Link, useLocation, useNavigate } from "react-router-dom";
+import axios from "axios";
+
+const BACKEND_URL = import.meta.env.VITE_BASE_URL;
 
 export const Navbar: React.FC = () => {
   const location = useLocation();
   const navigate = useNavigate();
   const [isMenuOpen, setIsMenuOpen] = useState(false);
+  const [userId, setUserId] = useState<string>("");
+
+  const fetchUserId = async () => {
+    try {
+      const token = localStorage.getItem("token");
+      const response = await axios.get(`${BACKEND_URL}/api/v1/user/whoami`, {
+        headers: {
+          Authorization: `${token}`,
+        },
+      });
+      setUserId(response.data.id);
+    } catch (error) {
+      console.error("Cannot fetch the user id!");
+    }
+  };
 
   const handleLogOut = () => {
     localStorage.removeItem("token");
     navigate("/");
   };
+
+  useEffect(() => {
+    fetchUserId()
+  },[])
 
   const toggleMenu = () => {
     setIsMenuOpen(!isMenuOpen);
@@ -48,15 +70,18 @@ export const Navbar: React.FC = () => {
                 Get started
               </Button>
             </Link>
-            <div className="">
+            {
+              userId && location.pathname !== "/" &&
+              <div className="">
               <Button
                 type="button"
                 onClick={handleLogOut}
                 className="mx-2 max-sm:hidden"
-              >
+                >
                 Logout
               </Button>
             </div>
+              }
             <button
               type="button"
               className="inline-flex items-center p-2 w-10 h-10 justify-center text-sm text-gray-500 rounded-lg md:hidden hover:bg-gray-100 focus:outline-none focus:ring-2 focus:ring-gray-200 dark:text-gray-400 dark:hover:bg-gray-700 dark:focus:ring-gray-600"
@@ -148,19 +173,22 @@ export const Navbar: React.FC = () => {
                     Get started
                   </button>
                 </Link>
-                <li>
+                {
+                  userId && location.pathname !== "/" &&
+                  <li>
                   <button
                     type="button"
                     onClick={handleLogOut}
                     className={`py-2 px-3 rounded hover:bg-gray-100 md:hover:bg-transparent md:p-0 lg:hidden ${
                       location.pathname === "/contactus"
-                        ? "text-blue-700"
-                        : "text-slate-900"
-                    } dark:text-white dark:hover:bg-gray-700 dark:hover:text-white md:dark:hover:bg-transparent dark:border-gray-700`}
-                  >
+                      ? "text-blue-700"
+                      : "text-slate-900"
+                      } dark:text-white dark:hover:bg-gray-700 dark:hover:text-white md:dark:hover:bg-transparent dark:border-gray-700`}
+                      >
                     Logout
                   </button>
                 </li>
+                  }
               </li>
             </ul>
           </div>
