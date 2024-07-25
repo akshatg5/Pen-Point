@@ -235,7 +235,7 @@ export const ReadBlogPage = () => {
           )}
         </div>
         <hr className="border border-black w-[40rem] max-sm:w-full"></hr>
-        <div className="w-1/2 text-center my-4 rounded-xl">
+        <div className="w-1/2 text-center my-4 rounded-xl flex justify-center">
           <img src={imageLink} alt={`${title}`} className="rounded-xl"/>
         </div>
         <div className=" mt-8 prose prose-lg mb-6">

@@ -16,6 +16,7 @@ interface Blog {
   publishedAt: string;
   firstName: string;
   lastName: string;
+  imageLink: string;
 }
 
 const AllBlogs: React.FC = () => {
@@ -68,8 +69,12 @@ const AllBlogs: React.FC = () => {
           </>
         ) : blogs.length === 0 ? (
           <Link to={"/addblog"} className="text-center mt-10">
-            <h1 className="text-2xl font-bold underline">No blogs on your feed!</h1>
-            <p className="text-md font-semibold">Write some yourself, come on!</p>
+            <h1 className="text-2xl font-bold underline">
+              No blogs on your feed!
+            </h1>
+            <p className="text-md font-semibold">
+              Write some yourself, come on!
+            </p>
           </Link>
         ) : (
           blogs.map((blog) => (
@@ -82,6 +87,7 @@ const AllBlogs: React.FC = () => {
               firstName={blog.publishedBy.firstName}
               lastName={blog.publishedBy.lastName}
               toLink={`/blog/${blog.id}`}
+              imageLink={blog.imageLink}
             />
           ))
         )}

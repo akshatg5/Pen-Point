@@ -6,6 +6,7 @@ interface BlogCardProps {
   title: string;
   content: string;
   toLink: string;
+  imageLink: string | null;
   authorId: string;
   publishedAt: Date;
   firstName: string;
@@ -16,6 +17,7 @@ export const BlogCard: React.FC<BlogCardProps> = ({
   title,
   content,
   toLink,
+  imageLink,
   publishedAt,
   firstName,
   lastName,
@@ -36,7 +38,7 @@ export const BlogCard: React.FC<BlogCardProps> = ({
             {title}
           </h5>
           <ReactMarkdown className="font-normal text-gray-700 dark:text-gray-400">
-            {content.slice(0, 100) + "..."}
+            {content.slice(0,80) + "..."}
           </ReactMarkdown>
           <div className="flex items-center">
             <p className="font-xs text-slate-400 max-sm:text-xs">
@@ -61,8 +63,15 @@ export const BlogCard: React.FC<BlogCardProps> = ({
         </Link>
       </div>
       <div className="ml-6 max-sm:ml-1">
-        <div className="bg-slate-700 rounded-full w-20 h-20 max-sm:w-14 max-sm:h-14 flex justify-center items-center">
-          <p className="max-sm:text-xs text-white">{title[0]}</p>
+        <div className="w-28 h-28 max-sm:w-14 max-sm:h-14 flex justify-center items-center rounded-full bg-slate-700 text-white">
+          {imageLink ? (
+            <div
+              className="w-full h-full bg-cover bg-center rounded-full"
+              style={{ backgroundImage: `url(${imageLink})` }}
+            ></div>
+          ) : (
+            <span className="text-2xl max-sm:text-lg">{title.charAt(0)}</span>
+          )}
         </div>
       </div>
     </div>
